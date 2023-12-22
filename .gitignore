@@ -1,3 +1,7 @@
+#custom
+.exe
+/chess
+
 # Prerequisites
 *.d
 
