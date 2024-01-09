@@ -3,12 +3,10 @@
 #include <cstdio>
 #include <iostream>
 
-// using std::cout;
-// using std::endl;
 
 Board::Board() {
 
-  // place the the first line of black white pieces
+  // place the first line of black white pieces
   for (auto &[team, row] :
        {pair{Team::CHESS_BLACK, 0}, pair{Team::CHESS_WHITE, GRID_SIZE - 1}}) {
 
@@ -22,7 +20,7 @@ Board::Board() {
     boardState[row][7].reset(new Rook({row, 7}, team));
   }
 
-  // place the the second line of black white pieces(pawns)
+  // place  the second line of black white pieces(pawns)
   for (auto &[team, row] :
        {pair{Team::CHESS_BLACK, 1}, pair{Team::CHESS_WHITE, GRID_SIZE - 2}}) {
 

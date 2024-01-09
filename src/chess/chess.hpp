@@ -21,6 +21,9 @@ class ChessGame {
     Coord mapIndicesToCoord(Coord );
   public:
     ChessGame(const ChessGame& )= delete; //delete copy constructor
+    ChessGame& operator=(const ChessGame& )= delete; //delete copy constructor
+    ChessGame(const ChessGame& )= delete; //delete copy constructor
+
     static shared_ptr<ChessGame> getGameInstance();
     void highlightPiece(Coord, HighlightLevel , bool);
     void drawBoard();
@@ -28,7 +31,7 @@ class ChessGame {
     void updateScreen();
     void loadAndPrepareAssets();
     void runGameLoop();
-    ~ChessGame();
+    ~ChessGame() noexcept;
 };
 
 
