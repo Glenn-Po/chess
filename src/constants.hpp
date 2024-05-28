@@ -37,4 +37,8 @@ LIGHT_RED      = { 127, 0, 0, 255 };
 // extern map<PieceType, Texture2D> BLACK_SPRITES, WHITE_SPRITES;
 // 2. Audio
 
+
+// check if (row, col) is within bound on internal board
+bool isValidCell(int row, int col);
+
 #endif

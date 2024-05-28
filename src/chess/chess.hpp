@@ -6,6 +6,9 @@
 #include "../board/board.hpp"
 #include "../constants.hpp"
 #include "../types.hpp"
+#include <cstdio>
+
+using std::cout;
 
 extern Texture2D pathToTexture(string path);
 extern void processTextures();
@@ -22,8 +25,6 @@ class ChessGame {
   public:
     ChessGame(const ChessGame& )= delete; //delete copy constructor
     ChessGame& operator=(const ChessGame& )= delete; //delete copy constructor
-    ChessGame(const ChessGame& )= delete; //delete copy constructor
-
     static shared_ptr<ChessGame> getGameInstance();
     void highlightPiece(Coord, HighlightLevel , bool);
     void drawBoard();

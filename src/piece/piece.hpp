@@ -8,6 +8,7 @@
 #include <vector>
 
 using std::pair, std::string, std::vector;
+using std::printf;
 
 // check if cell coordinates are valid coordinates on the board
 extern bool (*cellWithinBounds)(int, int);
@@ -33,6 +34,12 @@ public:
   PieceType getPieceType(){return pieceType;}
   bool move(BoardState, pair<int, int>);
   pair<int, int> _coord() { return coordinate; };
+    // Overloading the << operator.
+    friend std::ostream& operator<< (std::ostream& os, const Piece& piece) {
+        auto [row, col] = piece.coordinate;
+        os << "Piece(Team: " << piece.team << ", Type: " << piece.pieceType << ", At: " <<row <<","<<col << ")";
+        return os;
+    }
   virtual Path getPossibleMoves(BoardState) = 0;
 };
 

@@ -49,6 +49,10 @@ enum class HighlightLevel{
   DANGER,
 };
 
+std::ostream& operator<<(std::ostream& os, PieceType piece);
+std::ostream& operator<<(std::ostream& os, Team team);
+std::ostream& operator<<(std::ostream& os, HighlightLevel level);
+
 // pardon me std::cout too long UwU
 inline void logMsg(string msg) { std::cout << msg << std::endl; }
 

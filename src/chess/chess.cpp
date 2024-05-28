@@ -34,7 +34,7 @@ ChessGame::ChessGame():chessBoard(Board()){
   
 }
 
-ChessGame::~ChessGame(){}
+ChessGame::~ChessGame() noexcept{}
 
 shared_ptr<ChessGame> ChessGame::getGameInstance(){
   if(ChessGame::gameInstance.get() == nullptr)
@@ -124,49 +124,61 @@ void ChessGame::runGameLoop(){
   loadAndPrepareAssets();
 
   bool pieceSelected = false;
-  int cellX = 0, cellY = 0;
+
+  int print = 50;
+
+  int rowSelectedPiece, colSelectedPiece;
 
 
   //! Animate movement
-  bool isMoving = false;
+//  bool isMoving = false;
+
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
     BeginDrawing();
 
     ClearBackground(Color{42, 47, 79});
+    drawBoard();
 
-    //check if a piece has been selected and highlight it, and its moves
-    if(!isMoving && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
-      auto [x, y] = currentMouseCoord = pair{GetMouseX(), GetMouseY()};
 
-      //TODO find an easier way of resolving coord to board indices
-      // int yi = (x - MARGIN_X)/CELL_SIZE;
-      // int xi = (y - MARGIN_Y)/CELL_SIZE;
-      
-      for (int row = 0; row < GRID_SIZE; row++) {
-        for (int col = 0; col < GRID_SIZE; col++) {
-          auto cellRect = Rectangle{float(MARGIN_X + col * CELL_SIZE), 
-                                    float(MARGIN_Y + row * CELL_SIZE),
-                          CELL_SIZE, CELL_SIZE};
-          pieceSelected = CheckCollisionPointRec(Vector2{float(x), float(y)}, cellRect);
-          if(pieceSelected){
-            lastMouseClickCoord = {x, y};
-            cellX = row, cellY = col;
-            break;
-          } 
+      //check if a piece has been selected and highlight it, and its moves
+    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+        lastMouseClickCoord = currentMouseCoord;
+        currentMouseCoord = pair{GetMouseX(), GetMouseY()};
+        int mouseX = GetMouseX();
+        int mouseY = GetMouseY();
+
+        //convert from UI to Board
+        colSelectedPiece = (mouseX - MARGIN_X)/CELL_SIZE;
+        rowSelectedPiece = (mouseY - MARGIN_Y)/CELL_SIZE;
+
+        if (isValidCell(rowSelectedPiece, colSelectedPiece)) {
+            pieceSelected = true;
         }
-        if(pieceSelected) break;
-      }
     }
 
+      if(pieceSelected) {
+          auto piece = this->chessBoard.get(rowSelectedPiece, colSelectedPiece);
+          if(piece != nullptr) {
+              if(print > 1) {
+                  cout << *piece;
+                  print--;
+              }
+              for(auto [row, col] : piece->getPossibleMoves(this->chessBoard.boardState)){
+                  highlightPiece(pair{row, col}, HighlightLevel::WARNING, true);
+              }
+          }
+      }
+
+      if(pieceSelected)
+      highlightPiece(pair{rowSelectedPiece, colSelectedPiece}, HighlightLevel::INFO, false);
+
+    //pieceSelected = false;
+
+      drawSprites();
 
 
-    drawBoard();
-    if(pieceSelected)
-      highlightPiece(pair{cellX, cellY}, HighlightLevel::INFO, false);
-    drawSprites();
-
-    EndDrawing();
+      EndDrawing();
   }
 
 }

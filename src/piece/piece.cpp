@@ -37,13 +37,14 @@ Path Pawn::getPossibleMoves(BoardState boardState) {
 
   // first determine default valid target cells
   // movement of pawn depends on its team
-  // asummming here that white is up and black down: ui needs to be aware :-O
+  // assuming here that white is up and black down: ui needs to be aware :-O
   auto [y, x] = this->coordinate;
 
   // direction
   // a value of 1 means the pawn is up (and Team Black)
   // otherwise the pawn is down (and Team White)
   int direction = this->team == Team::CHESS_BLACK ? 1 : -1;
+
 
   // there are generally 3 directions to move(2 often stale )
   for (int walk : {-1, 0, 1})
@@ -52,9 +53,9 @@ Path Pawn::getPossibleMoves(BoardState boardState) {
       possibleMoves.insert({x + direction, y + walk});
     }
 
-  if (this->moveCount == 0) {
-    int increment = this->team == Team::CHESS_BLACK ? 1 : -1;
-    possibleMoves.insert({x + increment * 2, y});
+    //first move
+  if (this->moveCount == 0) { //
+    possibleMoves.insert({x + direction * 2, y});
   }
 
   this->moveCount++;
@@ -104,6 +105,8 @@ Path Knight::getPossibleMoves(BoardState boardState) {
   return possibleMoves;
 }
 
+
+
 Bishop::Bishop(Coord coord, Team team)
     : Piece(coord, team, PieceType::BISHOP) {}
 
@@ -118,7 +121,7 @@ Path Bishop::getPossibleMoves(BoardState boardState) {
 
   auto [x, y] = this->coordinate;
   Path pathDiffs{
-      {1, 1},   // move diangonally downward to right
+      {1, 1},   // move diagonally downward to right
       {-1, 1},  // move diagonally downward to left
       {-1, -1}, // move diagonally upward to left
       {1, -1}   // move diagonally upward to right

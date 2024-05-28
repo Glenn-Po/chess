@@ -1,0 +1,1 @@
+https://caballerocoll.com/blog/bevy-chess-tutorial/
