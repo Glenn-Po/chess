@@ -48,17 +48,16 @@ Path Pawn::getPossibleMoves(BoardState boardState) {
 
   // there are generally 3 directions to move(2 often stale )
   for (int walk : {-1, 0, 1})
-    if (cellWithinBounds(x + direction, y + walk)) {
-      // logging point change
-      possibleMoves.insert({x + direction, y + walk});
+    if (cellWithinBounds(x + walk, y + direction)) {
+      // x should only change when can attack
+      possibleMoves.insert({x + walk, y + direction});
     }
 
     //first move
   if (this->moveCount == 0) { //
-    possibleMoves.insert({x + direction * 2, y});
+    possibleMoves.insert({x, y + direction*2});
   }
 
-  this->moveCount++;
   return possibleMoves;
 }
 
@@ -88,16 +87,16 @@ Path Knight::getPossibleMoves(BoardState boardState) {
     for (int turn : {1, -1}) {
 
       // two squares left/right and one forward/backward
-      auto [cellXLead, cellYLead] = pair{x + walk, y + turn};
+      auto [cellXLead, cellYLead] = pair{x + turn, y + walk};
 
       // one square left/right and two squares forward/backward
-      auto [cellXTrail, cellYTrail] = pair{x + turn, y + walk};
+//      auto [cellXTrail, cellYTrail] = pair{x + turn, y + walk};
 
       if (cellWithinBounds(cellXLead, cellYLead))
         possibleMoves.insert({cellXLead, cellYLead});
-
-      if (cellWithinBounds(cellXTrail, cellYTrail))
-        possibleMoves.insert({cellXTrail, cellYTrail});
+//
+//      if (cellWithinBounds(cellXTrail, cellYTrail))
+//        possibleMoves.insert({cellXTrail, cellYTrail});
     }
   }
 
@@ -127,8 +126,8 @@ Path Bishop::getPossibleMoves(BoardState boardState) {
       {1, -1}   // move diagonally upward to right
   };
 
-  for (auto &diff : pathDiffs) {
-    Position position = {x, y};
+  for (auto [dr, dc] : pathDiffs) {
+    Position position = {x + , y};
     while (cellWithinBounds(position.first + diff.first,
                             position.second + diff.second)) {
       position.first += diff.first;
