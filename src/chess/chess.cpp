@@ -160,10 +160,6 @@ void ChessGame::runGameLoop(){
       if(pieceSelected) {
           auto piece = this->chessBoard.get(rowSelectedPiece, colSelectedPiece);
           if(piece != nullptr) {
-              if(print > 1) {
-                  cout << *piece;
-                  print--;
-              }
               for(auto [row, col] : piece->getPossibleMoves(this->chessBoard.boardState)){
                   highlightPiece(pair{row, col}, HighlightLevel::WARNING, true);
               }
